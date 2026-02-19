@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: caravan
+    jwt:
+      keycloak:
+        url: ${ISSUER_URI:https://keycloak.ui-tap.com/realms/master}
+        client-id: ${CLIENT_ID:caravan}
+        client-secret: ${CLIENT_SECRET:FcTEFP7TLwnxXY617IlNeakw445VMzVj}
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${ISSUER_URI:https://keycloak.ui-tap.com/realms/master}
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+  web:
+    error:
+      include-message: always
+
+server:
+  servlet:
+    context-path: '/api-caravan/'
+  port: ${PORT:8080}
+  address: 0.0.0.0
+
+jwt:
+  auth:
+    converter:
+      resource-id: ${spring.application.jwt.keycloak.client-id}
+      principle-attribute: preferred_username
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+management:
+  endpoint:
+    metrics:
+      access: read_only
+    prometheus:
+      access: read_only
+    health:
+      show-details: always
+    beans:
+      access: read_only
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  prometheus:
+    metrics:
+      export:
+        enabled: true
