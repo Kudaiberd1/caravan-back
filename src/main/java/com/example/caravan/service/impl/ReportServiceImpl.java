@@ -1,18 +1,19 @@
 package com.example.caravan.service.impl;
 
-import com.example.caravan.dto.response.EmployeeResponse;
+import com.example.caravan.dto.response.ReportRecipientResponse;
 import com.example.caravan.dto.response.ReportResponse;
 import com.example.caravan.entity.FeedbackReport;
-import com.example.caravan.entity.ReportRecipient;
 import com.example.caravan.repository.FeedbackReportRepository;
 import com.example.caravan.repository.ReportRecipientRepository;
 import com.example.caravan.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,37 +24,33 @@ public class ReportServiceImpl implements ReportService {
     private final ReportRecipientRepository reportRecipientRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<ReportResponse> getReports() {
-        List<FeedbackReport> feedbackReports = feedbackReportRepository.findAll();
-        List<ReportResponse> reportResponses = new ArrayList<>();
+        List<FeedbackReport> feedbackReports = feedbackReportRepository.findAllByDeletedFalseOrDeletedIsNull();
 
-        for(FeedbackReport report : feedbackReports) {
+        Map<Long, List<ReportRecipientResponse>> recipientsByReportId = reportRecipientRepository
+                .findAllWithRecipientByReportIn(feedbackReports)
+                .stream()
+                .collect(Collectors.groupingBy(
+                        rr -> rr.getReport().getReportId(),
+                        Collectors.mapping(rr -> ReportRecipientResponse.builder()
+                                .employeeId(rr.getRecipient().getEmployeeId())
+                                .fullName(rr.getRecipient().getFullName())
+                                .status(rr.getStatus())
+                                .build(),
+                                Collectors.toList())
+                ));
 
-            List<ReportRecipient> reportRecipients = reportRecipientRepository.findAllByReport(report);
-
-            List<EmployeeResponse> employeeResponses = new ArrayList<>();
-
-            for(ReportRecipient recipient : reportRecipients) {
-                employeeResponses.add(
-                    EmployeeResponse.builder()
-                        .employeeId(recipient.getRecipient().getEmployeeId())
-                        .fullName(recipient.getRecipient().getFullName())
-                        .build()
-                );
-            }
-
-            ReportResponse response = ReportResponse.builder()
-                            .id(report.getReportId())
-                            .reportType(report.getReportType().toString())
-                            .bodyText(report.getBodyText())
-                            .recipients(employeeResponses)
-                            .lastModifiedDate(report.getLastModifiedDate())
-                            .build();
-
-
-            reportResponses.add(response);
-        }
-
-        return reportResponses;
+        return feedbackReports.stream()
+                .map(report -> ReportResponse.builder()
+                        .id(report.getReportId())
+                        .reportType(report.getReportType().toString())
+                        .subject(report.getSubject())
+                        .bodyText(report.getBodyText())
+                        .sendDate(report.getSendDate())
+                        .lastModifiedDate(report.getLastModifiedDate())
+                        .recipients(recipientsByReportId.getOrDefault(report.getReportId(), List.of()))
+                        .build())
+                .collect(Collectors.toList());
     }
 }

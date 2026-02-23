@@ -12,7 +12,9 @@ import java.util.List;
 public class ReportResponse {
     private Long id;
     private String reportType;
-    private List<EmployeeResponse> recipients;
+    private String subject;
     private String bodyText;
+    private OffsetDateTime sendDate;
     private OffsetDateTime lastModifiedDate;
+    private List<ReportRecipientResponse> recipients;
 }

@@ -17,7 +17,7 @@ public class ReportController {
 
     private final ReportService reportService;
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<ReportResponse>> getReports() {
         List<ReportResponse> reports = reportService.getReports();
         return ResponseEntity.ok(reports);
