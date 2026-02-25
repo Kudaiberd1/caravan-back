@@ -3,6 +3,8 @@ package com.example.caravan.entity;
 import com.example.caravan.entity.enums.RecipientStatusEnum;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Data
 @Builder
@@ -10,22 +12,20 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "report_recipient")
+@IdClass(ReportRecipientId.class)
 public class ReportRecipient {
 
-    @EmbeddedId
-    private ReportRecipientId id;
-
-    @MapsId("reportId")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Id
+    @ManyToOne
     @JoinColumn(name = "report_id")
     private FeedbackReport report;
 
-    @MapsId("recipientId")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Id
+    @ManyToOne
     @JoinColumn(name = "recipient_id")
     private Employee recipient;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private RecipientStatusEnum status;
 }

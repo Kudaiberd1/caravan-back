@@ -1,11 +1,7 @@
 package com.example.caravan.entity;
 
 import jakarta.persistence.*;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Builder
@@ -18,8 +14,8 @@ public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "location_id")
-    private Long locationId;
+    private Integer locationId;
 
-    @Column(name = "location_name", length = 255)
+    @Column(name = "location_name")
     private String locationName;
 }

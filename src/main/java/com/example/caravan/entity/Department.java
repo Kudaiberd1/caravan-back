@@ -14,12 +14,12 @@ public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "department_id")
-    private Long departmentId;
+    private Integer departmentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
 
-    @Column(name = "department_name", length = 255)
+    @Column(name = "department_name")
     private String departmentName;
 }

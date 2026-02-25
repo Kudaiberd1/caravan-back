@@ -16,13 +16,13 @@ public class Door {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "door_id")
-    private Long doorId;
+    private Integer doorId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
 
-    @Column(name = "door_name", length = 255)
+    @Column(name = "door_name")
     private String doorName;
 
     @Enumerated(EnumType.STRING)
@@ -32,7 +32,6 @@ public class Door {
     @Column(name = "created_date")
     private OffsetDateTime createdDate;
 
-    @Column(name = "deleted")
     private Boolean deleted;
 
     @Column(name = "last_modified_date")

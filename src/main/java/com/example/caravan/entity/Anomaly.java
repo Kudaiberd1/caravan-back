@@ -1,7 +1,10 @@
 package com.example.caravan.entity;
 
+import com.example.caravan.entity.enums.AnomalyTypeEnum;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Data
 @Builder
@@ -14,17 +17,18 @@ public class Anomaly {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "anomaly_id")
-    private Long anomalyId;
+    private Integer anomalyId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    @Column(name = "type", length = 255)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "type")
+    private AnomalyTypeEnum type;
 
-    @Lob
-    @Column(name = "description")
+    @Column(columnDefinition = "text")
     private String description;
 
     @Column(name = "is_excused")

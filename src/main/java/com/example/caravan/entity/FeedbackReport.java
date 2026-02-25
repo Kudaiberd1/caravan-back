@@ -3,6 +3,9 @@ package com.example.caravan.entity;
 import com.example.caravan.entity.enums.ReportTypeEnum;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -17,7 +20,7 @@ public class FeedbackReport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "report_id")
-    private Long reportId;
+    private Integer reportId;
 
     @Column(name = "sender_id")
     private UUID senderId;
@@ -25,23 +28,21 @@ public class FeedbackReport {
     @Column(name = "send_date")
     private OffsetDateTime sendDate;
 
-    @Column(name = "created_by", length = 255)
+    @Column(name = "created_by")
     private String createdBy;
 
     @Column(name = "last_modified_date")
     private OffsetDateTime lastModifiedDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "report_type")
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "report_type", columnDefinition = "report_type_enum")
     private ReportTypeEnum reportType;
 
-    @Lob
-    @Column(name = "body_text")
+    @Column(name = "body_text", columnDefinition = "text")
     private String bodyText;
 
-    @Column(name = "subject", length = 255)
     private String subject;
 
-    @Column(name = "deleted")
     private Boolean deleted;
 }
