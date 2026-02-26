@@ -1,9 +1,8 @@
 package com.example.caravan.entity;
 
-import com.example.caravan.entity.enums.AreaFunctionEnum;
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalTime;
+import java.time.OffsetDateTime;
 
 @Data
 @Builder
@@ -22,10 +21,13 @@ public class ScheduleCheckpoint {
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "required_area")
-    private AreaFunctionEnum requiredArea;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "zone_id")
+    private Zone zone;
 
-    private LocalTime startTime;
-    private LocalTime endTime;
+    @Column(name = "start_time")
+    private OffsetDateTime startTime;
+
+    @Column(name = "end_time")
+    private OffsetDateTime endTime;
 }

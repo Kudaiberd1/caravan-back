@@ -28,9 +28,6 @@ public class FeedbackReport {
     @Column(name = "send_date")
     private OffsetDateTime sendDate;
 
-    @Column(name = "created_by")
-    private String createdBy;
-
     @Column(name = "last_modified_date")
     private OffsetDateTime lastModifiedDate;
 

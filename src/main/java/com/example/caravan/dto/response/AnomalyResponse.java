@@ -13,6 +13,5 @@ public class AnomalyResponse {
     private AnomalyTypeEnum anomalyType;
     private String description;
     private String employeeName;
-    private String departmentName;
     private String priorityLabel;
 }

@@ -20,19 +20,20 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
             WITH LatestEventsToday AS (
                 SELECT
                     ev.employee_id,
-                    ev.event_direction,
-                    d.area_function,
+                    d.door_direction,
+                    z.area_function,
                     ROW_NUMBER() OVER(PARTITION BY ev.employee_id ORDER BY ev.event_time DESC) as rn
                 FROM event ev
                 JOIN door d ON ev.door_id = d.door_id
-                JOIN location l ON d.location_id = l.location_id
+                JOIN zone z ON d.zone_id = z.zone_id
+                JOIN location l ON z.location_id = l.location_id
                 WHERE DATE(ev.event_time) = CURRENT_DATE
                   AND l.location_name = :location
             )
             SELECT COUNT(employee_id)
             FROM LatestEventsToday
             WHERE rn = 1
-              AND NOT (event_direction = 'OUT' AND area_function = 'MAIN_ENTRANCE')
+              AND NOT (door_direction = 'OUT' AND area_function = 'MAIN_ENTRANCE')
             """, nativeQuery = true)
     Long countEmployeesOnSiteToday(@Param("location") String location);
 
@@ -41,12 +42,13 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
             WITH LatestEventsToday AS (
                 SELECT
                     ev.employee_id,
-                    ev.event_direction,
-                    d.area_function,
+                    d.door_direction,
+                    z.area_function,
                     ROW_NUMBER() OVER(PARTITION BY ev.employee_id ORDER BY ev.event_time DESC) as rn
                 FROM event ev
                 JOIN door d ON ev.door_id = d.door_id
-                JOIN location l ON d.location_id = l.location_id
+                JOIN zone z ON d.zone_id = z.zone_id
+                JOIN location l ON z.location_id = l.location_id
                 WHERE DATE(ev.event_time) = CURRENT_DATE
                   AND l.location_name = :location
             ),
@@ -62,7 +64,7 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
                 SELECT employee_id
                 FROM LatestEventsToday
                 WHERE rn = 1
-                  AND NOT (event_direction = 'OUT' AND area_function = 'MAIN_ENTRANCE')
+                  AND NOT (door_direction = 'OUT' AND area_function = 'MAIN_ENTRANCE')
             )
             SELECT
                 dep.department_id AS departmentId,

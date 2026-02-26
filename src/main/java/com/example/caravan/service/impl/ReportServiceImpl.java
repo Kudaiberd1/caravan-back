@@ -1,6 +1,7 @@
 package com.example.caravan.service.impl;
 
 import com.example.caravan.dto.request.ReportRequest;
+import com.example.caravan.dto.request.ReportUpdateRequest;
 import com.example.caravan.dto.response.EmployeeResponse;
 import com.example.caravan.dto.response.ReportResponse;
 import com.example.caravan.entity.Employee;
@@ -55,6 +56,7 @@ public class ReportServiceImpl implements ReportService {
             ReportResponse response = ReportResponse.builder()
                             .id(Long.valueOf(report.getReportId()))
                             .reportType(report.getReportType().toString())
+                            .subject(report.getSubject())
                             .bodyText(report.getBodyText())
                             .recipients(employeeResponses)
                             .lastModifiedDate(report.getLastModifiedDate())
@@ -76,16 +78,13 @@ public class ReportServiceImpl implements ReportService {
                         .getAuthentication();
 
         UUID userId = UUID.fromString(authentication.getToken().getSubject());
-        String name = authentication.getToken().getClaimAsString("name");
-
-
 
         FeedbackReport feedbackReport = FeedbackReport.builder()
                 .senderId(userId)
                 .sendDate(OffsetDateTime.now())
                 .lastModifiedDate(OffsetDateTime.now())
-                .createdBy(name)
                 .reportType(reportRequest.getReportType())
+                .subject(reportRequest.getSubject())
                 .bodyText(reportRequest.getBodyText())
                 .deleted(false)
                 .build();
@@ -113,5 +112,24 @@ public class ReportServiceImpl implements ReportService {
         feedback.setDeleted(true);
         feedbackReportRepository.save(feedback);
 
+    }
+
+    @Override
+    @Transactional
+    public void updateReport(ReportUpdateRequest reportRequest, Integer id) {
+        FeedbackReport feedbackReport = feedbackReportRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Report not found with id: " + id));
+
+        if(reportRequest.getBodyText() != null) feedbackReport.setBodyText(reportRequest.getBodyText());
+        if(reportRequest.getSubject() != null) feedbackReport.setSubject(reportRequest.getSubject());
+        feedbackReport.setLastModifiedDate(OffsetDateTime.now());
+
+        if(reportRequest.getDeleteRecipientIds() != null) {
+            List<ReportRecipient> reportRecipients = new ArrayList<>();
+            for(Integer recipientId : reportRequest.getDeleteRecipientIds()){
+                ReportRecipient reportRecipient = reportRecipientRepository.findReportRecipientByRecipient_EmployeeIdAndReport(recipientId, feedbackReport).orElseThrow(() -> new IllegalArgumentException("Report recipient not found with employee id: " + recipientId + " and report id: " + id));
+                reportRecipients.add(reportRecipient);
+            }
+            reportRecipientRepository.deleteAll(reportRecipients);
+        }
     }
 }

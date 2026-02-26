@@ -1,6 +1,6 @@
 package com.example.caravan.entity.enums;
 
-public enum EventDirectionEnum {
+public enum DoorDirectionEnum {
     IN,
     OUT
 }

@@ -2,7 +2,6 @@ package com.example.caravan.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.OffsetDateTime;
 
 @Data
 @Builder
@@ -19,18 +18,4 @@ public class Schedule {
 
     @Column(name = "schedule_name")
     private String scheduleName;
-
-    @Column(name = "created_by")
-    private String createdBy;
-
-    @Column(name = "created_date")
-    private OffsetDateTime createdDate;
-
-    private Boolean deleted;
-
-    @Column(name = "last_modified_by")
-    private String lastModifiedBy;
-
-    @Column(name = "last_modified_date")
-    private OffsetDateTime lastModifiedDate;
 }

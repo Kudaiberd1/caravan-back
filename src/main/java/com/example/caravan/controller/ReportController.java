@@ -1,6 +1,7 @@
 package com.example.caravan.controller;
 
 import com.example.caravan.dto.request.ReportRequest;
+import com.example.caravan.dto.request.ReportUpdateRequest;
 import com.example.caravan.dto.response.ReportResponse;
 import com.example.caravan.service.ReportService;
 import lombok.AllArgsConstructor;
@@ -31,6 +32,12 @@ public class ReportController {
     @PutMapping("/{id}/resolve")
     public ResponseEntity<Void> resolveReport(@PathVariable Integer id) {
         reportService.resolveReport(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateReport(@RequestBody ReportUpdateRequest reportRequest, @PathVariable Integer id) {
+        reportService.updateReport(reportRequest, id);
         return ResponseEntity.ok().build();
     }
 

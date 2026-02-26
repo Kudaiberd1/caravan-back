@@ -13,7 +13,6 @@ public interface AnomalyRepository extends JpaRepository<Anomaly, Integer> {
         String getAnomalyType();
         String getDescription();
         String getEmployeeName();
-        String getDepartmentName();
         String getPriorityLabel();
     }
 
@@ -23,7 +22,6 @@ public interface AnomalyRepository extends JpaRepository<Anomaly, Integer> {
                 a.type AS anomalyType,
                 a.description AS description,
                 e.full_name AS employeeName,
-                d.department_name AS departmentName,
                 CASE
                     WHEN a.type IN ('UNDERWORKING', 'MISSED_CHECKPOINT') THEN 'НЕМЕДЛЕННЫЙ'
                     WHEN a.type = 'OVERWORKING' THEN 'СЕРЕДИНА'
@@ -31,10 +29,10 @@ public interface AnomalyRepository extends JpaRepository<Anomaly, Integer> {
                 END AS priorityLabel
             FROM anomaly a
             JOIN employee e ON a.employee_id = e.employee_id
-            LEFT JOIN department d ON e.department_id = d.department_id
-            LEFT JOIN location l ON d.location_id = l.location_id
+            LEFT JOIN department dep ON e.department_id = dep.department_id
+            LEFT JOIN location l ON dep.location_id = l.location_id
             WHERE (a.is_excused = FALSE OR a.is_excused IS NULL)
-              AND l.location_name = :location
+              AND (:location IS NULL OR l.location_name = :location)
             ORDER BY
                 CASE
                     WHEN a.type IN ('UNDERWORKING', 'MISSED_CHECKPOINT') THEN 1

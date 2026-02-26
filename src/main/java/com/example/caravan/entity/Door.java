@@ -1,6 +1,7 @@
 package com.example.caravan.entity;
 
 import com.example.caravan.entity.enums.AreaFunctionEnum;
+import com.example.caravan.entity.enums.DoorDirectionEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.OffsetDateTime;
@@ -19,21 +20,13 @@ public class Door {
     private Integer doorId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id")
-    private Location location;
+    @JoinColumn(name = "zone_id")
+    private Zone zone;
 
     @Column(name = "door_name")
     private String doorName;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "area_function")
-    private AreaFunctionEnum areaFunction;
-
-    @Column(name = "created_date")
-    private OffsetDateTime createdDate;
-
-    private Boolean deleted;
-
-    @Column(name = "last_modified_date")
-    private OffsetDateTime lastModifiedDate;
+    @Column(name = "door_direction")
+    private DoorDirectionEnum doorDirection;
 }

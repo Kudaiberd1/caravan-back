@@ -1,6 +1,5 @@
 package com.example.caravan.entity;
 
-import com.example.caravan.entity.enums.EventDirectionEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.OffsetDateTime;
@@ -24,10 +23,6 @@ public class Event {
 
     @Column(name = "event_time")
     private OffsetDateTime eventTime;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "event_direction")
-    private EventDirectionEnum eventDirection;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "door_id")

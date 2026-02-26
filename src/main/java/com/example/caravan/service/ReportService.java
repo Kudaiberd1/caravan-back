@@ -1,6 +1,7 @@
 package com.example.caravan.service;
 
 import com.example.caravan.dto.request.ReportRequest;
+import com.example.caravan.dto.request.ReportUpdateRequest;
 import com.example.caravan.dto.response.ReportResponse;
 
 import java.util.List;
@@ -12,4 +13,6 @@ public interface ReportService {
     void postReport(ReportRequest reportRequest);
 
     void resolveReport(Integer id);
+
+    void updateReport(ReportUpdateRequest reportRequest, Integer id);
 }
