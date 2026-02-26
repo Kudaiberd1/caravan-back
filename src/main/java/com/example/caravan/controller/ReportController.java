@@ -27,4 +27,11 @@ public class ReportController {
         reportService.postReport(reportRequest);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/{id}/resolve")
+    public ResponseEntity<Void> resolveReport(@PathVariable Integer id) {
+        reportService.resolveReport(id);
+        return ResponseEntity.ok().build();
+    }
+
 }

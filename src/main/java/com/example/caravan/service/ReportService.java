@@ -10,4 +10,6 @@ public interface ReportService {
     List<ReportResponse> getReports();
 
     void postReport(ReportRequest reportRequest);
+
+    void resolveReport(Integer id);
 }

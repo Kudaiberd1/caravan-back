@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DepartmentHeatmapDto {
+public class DepartmentResponse {
     private Integer departmentId;
     private String departmentName;
-    private Long employeesOnLocation;
-    private Long employeesTotal;
 }

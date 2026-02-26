@@ -1,6 +1,6 @@
 package com.example.caravan.service.impl;
 
-import com.example.caravan.dto.response.DepartmentHeatmapDto;
+import com.example.caravan.dto.response.DepartmentHeatmapResponse;
 import com.example.caravan.mapper.EventMapper;
 import com.example.caravan.repository.EventRepository;
 import com.example.caravan.service.EventService;
@@ -23,7 +23,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<DepartmentHeatmapDto> getHeatmap(String location) {
+    public List<DepartmentHeatmapResponse> getHeatmap(String location) {
         var heatmap = eventRepository.onSiteHeatmapByDepartmentToday(location);
         return eventMapper.toDtoList(heatmap);
     }

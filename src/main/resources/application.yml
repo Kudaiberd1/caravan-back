@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: ${DATASOURCE_URL:jdbc:postgresql://10.36.80.32:5432/postgres}
+    url: ${DATASOURCE_URL:jdbc:postgresql://100.75.143.98:5432/postgres}
     username: admin
     password: ${DATASOURCE_PASSWORD:admin}
 

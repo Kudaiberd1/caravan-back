@@ -34,7 +34,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public List<ReportResponse> getReports() {
-        List<FeedbackReport> feedbackReports = feedbackReportRepository.findAll();
+        List<FeedbackReport> feedbackReports = feedbackReportRepository.findByDeletedFalse();
         List<ReportResponse> reportResponses = new ArrayList<>();
 
         for(FeedbackReport report : feedbackReports) {
@@ -94,7 +94,7 @@ public class ReportServiceImpl implements ReportService {
 
         List<ReportRecipient> reportRecipients = new ArrayList<>();
         for(Integer recipientId : reportRequest.getRecipientIds()) {
-            Employee employee = employeeRepository.findById(recipientId).orElseThrow(() -> new RuntimeException("Employee not found with id: " + recipientId));
+            Employee employee = employeeRepository.findById(recipientId).orElseThrow(() -> new IllegalArgumentException("Employee not found with id: " + recipientId));
 
             ReportRecipient reportRecipient = ReportRecipient.builder()
                     .report(feedbackReport)
@@ -105,5 +105,13 @@ public class ReportServiceImpl implements ReportService {
             reportRecipients.add(reportRecipient);
         }
         reportRecipientRepository.saveAll(reportRecipients);
+    }
+
+    @Override
+    public void resolveReport(Integer id) {
+        FeedbackReport feedback = feedbackReportRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Report not found with id: " + id));
+        feedback.setDeleted(true);
+        feedbackReportRepository.save(feedback);
+
     }
 }

@@ -1,6 +1,6 @@
 package com.example.caravan.controller;
 
-import com.example.caravan.dto.response.DepartmentHeatmapDto;
+import com.example.caravan.dto.response.DepartmentHeatmapResponse;
 import com.example.caravan.service.EventService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +25,8 @@ public class EventController {
     }
 
     @GetMapping("/heatmap")
-    public ResponseEntity<List<DepartmentHeatmapDto>> getHeatmap(@RequestParam String location) {
-        List<DepartmentHeatmapDto> heatmap = eventService.getHeatmap(location);
+    public ResponseEntity<List<DepartmentHeatmapResponse>> getHeatmap(@RequestParam String location) {
+        List<DepartmentHeatmapResponse> heatmap = eventService.getHeatmap(location);
         return ResponseEntity.ok(heatmap);
     }
 }
