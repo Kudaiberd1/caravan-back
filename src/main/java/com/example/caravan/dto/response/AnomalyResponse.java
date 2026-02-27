@@ -12,6 +12,7 @@ public class AnomalyResponse {
     private Integer anomalyId;
     private AnomalyTypeEnum anomalyType;
     private String description;
+    private String employeeId;
     private String employeeName;
     private String priorityLabel;
 }

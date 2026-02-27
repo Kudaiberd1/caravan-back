@@ -12,6 +12,7 @@ public interface AnomalyRepository extends JpaRepository<Anomaly, Integer> {
         Integer getAnomalyId();
         String getAnomalyType();
         String getDescription();
+        String getEmployeeId();
         String getEmployeeName();
         String getPriorityLabel();
     }
@@ -21,6 +22,7 @@ public interface AnomalyRepository extends JpaRepository<Anomaly, Integer> {
                 a.anomaly_id AS anomalyId,
                 a.type AS anomalyType,
                 a.description AS description,
+                e.employee_id AS employeeId,
                 e.full_name AS employeeName,
                 CASE
                     WHEN a.type IN ('UNDERWORKING', 'MISSED_CHECKPOINT') THEN 'НЕМЕДЛЕННЫЙ'
