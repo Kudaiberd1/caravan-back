@@ -9,11 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmployeeResponse {
-    private Integer employeeId;
+public class ReportEmployeeResponse {
+    private Long employeeId;
     private String fullName;
-    private String jobTitle;
-    private String position;
-    private Integer supervisorId;
-    private Integer requiredHours;
 }

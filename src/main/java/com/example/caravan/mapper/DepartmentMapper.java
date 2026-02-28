@@ -1,9 +1,7 @@
 package com.example.caravan.mapper;
 
-import com.example.caravan.dto.response.AnomalyResponse;
 import com.example.caravan.dto.response.DepartmentResponse;
 import com.example.caravan.entity.Department;
-import com.example.caravan.repository.AnomalyRepository;
 import org.mapstruct.Mapper;
 
 import java.util.List;

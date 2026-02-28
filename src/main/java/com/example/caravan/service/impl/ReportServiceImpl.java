@@ -2,7 +2,7 @@ package com.example.caravan.service.impl;
 
 import com.example.caravan.dto.request.ReportRequest;
 import com.example.caravan.dto.request.ReportUpdateRequest;
-import com.example.caravan.dto.response.EmployeeResponse;
+import com.example.caravan.dto.response.ReportEmployeeResponse;
 import com.example.caravan.dto.response.ReportResponse;
 import com.example.caravan.entity.Employee;
 import com.example.caravan.entity.FeedbackReport;
@@ -42,11 +42,11 @@ public class ReportServiceImpl implements ReportService {
 
             List<ReportRecipient> reportRecipients = reportRecipientRepository.findAllByReport(report);
 
-            List<EmployeeResponse> employeeResponses = new ArrayList<>();
+            List<ReportEmployeeResponse> reportEmployeeRespons = new ArrayList<>();
 
             for(ReportRecipient recipient : reportRecipients) {
-                employeeResponses.add(
-                    EmployeeResponse.builder()
+                reportEmployeeRespons.add(
+                    ReportEmployeeResponse.builder()
                         .employeeId(Long.valueOf(recipient.getRecipient().getEmployeeId()))
                         .fullName(recipient.getRecipient().getFullName())
                         .build()
@@ -58,7 +58,7 @@ public class ReportServiceImpl implements ReportService {
                             .reportType(report.getReportType().toString())
                             .subject(report.getSubject())
                             .bodyText(report.getBodyText())
-                            .recipients(employeeResponses)
+                            .recipients(reportEmployeeRespons)
                             .lastModifiedDate(report.getLastModifiedDate())
                             .build();
 
