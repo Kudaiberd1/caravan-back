@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: ${DATASOURCE_URL:jdbc:postgresql://100.75.143.98:5432/postgres}
+    url: ${DATASOURCE_URL}
     username: admin
-    password: ${DATASOURCE_PASSWORD:admin}
+    password: ${DATASOURCE_PASSWORD}
 
     jpa:
       hibernate:
@@ -16,15 +16,15 @@ spring:
     name: caravan
     jwt:
       keycloak:
-        url: ${ISSUER_URI:https://keycloak.ui-tap.com/realms/master}
-        client-id: ${CLIENT_ID:caravan}
-        client-secret: ${CLIENT_SECRET:FcTEFP7TLwnxXY617IlNeakw445VMzVj}
+        url: ${ISSUER_URI}
+        client-id: ${CLIENT_ID}
+        client-secret: ${CLIENT_SECRET}
 
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${ISSUER_URI:https://keycloak.ui-tap.com/realms/master}
+          issuer-uri: ${ISSUER_URI}
           jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
   web:
     error:
@@ -33,7 +33,7 @@ spring:
 server:
   servlet:
     context-path: '/api-caravan/'
-  port: ${PORT:8080}
+  port: ${PORT}
   address: 0.0.0.0
 
 jwt:
